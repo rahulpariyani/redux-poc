@@ -1,0 +1,24 @@
+.title {
+  color: #a5c9ca;
+  text-decoration: underline;
+  text-align: center;
+}
+.todoContainer {
+  background-color: #a5c9ca;
+  padding: 16px;
+  border-radius: 8px;
+  overflow-y: scroll;
+  height: 40vh;
+}
+.todo {
+  background-color: #e7f6f2;
+  color: #2c3333;
+  padding: 8px;
+  border-radius: 2px;
+  margin-bottom: 4px;
+  display: flex;
+  justify-content: space-between;
+}
+.checkbox {
+  margin: 6px 6px 0 0;
+}
