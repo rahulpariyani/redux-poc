@@ -3,11 +3,7 @@ import classes from "./todo.module.css";
 import Input from "../../components/Input";
 import Button from "../../components/Button";
 import { connect } from "react-redux";
-import {
-  a__todo_add,
-  a__todo_delete,
-  a__todo_toggle,
-} from "../../actions/todo.action";
+import { s__todo,fetchDummyTodos } from "../../store/slice/todo.slice";
 import DeleteIcon from "../../assets/icons/DeleteIcon.svg";
 class Todo extends Component {
   state = {
@@ -17,8 +13,8 @@ class Todo extends Component {
     this.addTodoHandler = () => {
       this.state.newTodo &&
         this.props.addTodo({
-          name: this.state.newTodo,
-          isCompleted: false,
+          title: this.state.newTodo,
+          completed: false,
         });
       this.setState({ newTodo: "" });
     };
@@ -26,7 +22,7 @@ class Todo extends Component {
       this.props.deleteTodo({ index: deleteIndex });
     };
     this.toggleTodoHandler = (e, index) => {
-      let payload = { index: index, isCompleted: e.target.checked };
+      let payload = { index: index, completed: e.target.checked };
       this.props.toggleTodo(payload);
     };
     this.inputHandler = (e) => {
@@ -42,10 +38,10 @@ class Todo extends Component {
                 <input
                   type="checkbox"
                   className={classes.checkbox}
-                  checked={todo.isCompleted}
+                  checked={todo.completed}
                   onChange={(e, i) => this.toggleTodoHandler(e, index)}
                 />
-                <span>{todo.name}</span>
+                <span>{todo.title}</span>
               </div>
               <img
                 src={DeleteIcon}
@@ -68,12 +64,8 @@ class Todo extends Component {
           onChange={this.inputHandler}
         />
         <Button onClick={this.addTodoHandler}>add</Button>
+        <Button onClick={()=>this.props.fetchDummyTodos()}>fetch dummy todos</Button>
         {this.renderTodos()}
-        {/* {this.props.Todo.length ? (
-          this.renderTodos()
-        ) : (
-          <h1>Please Add Something... </h1>
-        )} */}
       </section>
     );
   }
@@ -83,9 +75,10 @@ function mapStateToProps(state) {
 }
 function mapDispatchToProps(dispatch, newTodo) {
   return {
-    addTodo: (payload) => dispatch(a__todo_add(payload)),
-    deleteTodo: (payload) => dispatch(a__todo_delete(payload)),
-    toggleTodo: (payload) => dispatch(a__todo_toggle(payload)),
+    addTodo: (payload) => dispatch(s__todo.actions.todo_add(payload)),
+    deleteTodo: (payload) => dispatch(s__todo.actions.todo_delete(payload)),
+    toggleTodo: (payload) => dispatch(s__todo.actions.todo_toggle(payload)),
+    fetchDummyTodos: (payload) => dispatch(fetchDummyTodos(payload)),
   };
 }
 export default connect(mapStateToProps, mapDispatchToProps)(Todo);
